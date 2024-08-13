@@ -229,7 +229,7 @@ export function addProbeLoader2Rules<T extends Plugin.BuildRuleSetRule>(
   return rules.map((rule) => {
     if (!rule || typeof rule === 'string') return rule;
 
-    if (fn(rule)) {
+    if (fn(rule) && !rule.use) {
       const _rule = {
         ...rule,
         use: [
@@ -247,9 +247,10 @@ export function addProbeLoader2Rules<T extends Plugin.BuildRuleSetRule>(
 
     if (rule.use) {
       if (Array.isArray(rule.use)) {
-        const indexList = rule.use.map((_r, index) => {
+        let indexList: number[] = [];
+        rule.use.forEach((_r, index) => {
           if (fn(_r as T)) {
-            return index;
+            indexList.push(index);
           }
         });
 

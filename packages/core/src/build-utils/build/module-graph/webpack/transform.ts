@@ -174,7 +174,10 @@ async function appendModuleData(
       ? ''
       : module.getSource().transformed.length > 0
       ? module.getSource().transformed
-      : isFunction(origin?.originalSource) ? origin.originalSource()?.source()?.toString() : '';
+      : isFunction(origin?.originalSource)
+      ? origin.originalSource()?.source()?.toString() ?? ''
+      : '';
+
     const transformedSize = isExternalModule(origin)
       ? 0
       : module.getSize().transformedSize > 0
